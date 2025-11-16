@@ -1,7 +1,9 @@
+# function para sa pagdisplay ng player status
 def stats(player, name, health, energy):
     print(f"Player {player} ({name})")
     print(f"Health: {health}\nEnergy: {energy}")
 
+# function para sa pagreturn ng damage cost tas heal
 def moves(choice):
     match choice:
         case "A":
@@ -15,6 +17,7 @@ def moves(choice):
         case "E":
             return 0, 0, 0
 
+# main tas nagkuha ng pangalan ng players
 print("Welcome Vampire Spawn!")
 print("Fight for the right to ascend into a Vampire Lord")
 print("Attempt to knock out your opponent.")
@@ -23,12 +26,13 @@ print("Players, enter your names...\n")
 p1name = input("Player 1: ")
 p2name = input("Player 2: ")
 
-
+# magloop kapag Y paren yung continue
 continue_game = "Y"
 while continue_game == "Y":
     print(f"\nLet the duel between {p1name} and {p2name} begin!\n")
     p1health, p1energy, p2health, p2energy = 100, 50, 100, 50
     nights = 1
+    # magloop hangga't may buhay pa yung dalawang players
     while p1health > 0 and p2health > 0:
         print("=" * 3 + f" Night {nights} " + "=" * 3)
         print("=" * 10 + "\nPlayer Status\n" + "-" * 10)
@@ -46,6 +50,8 @@ while continue_game == "Y":
         print("Please enter A, B, C, D, or E only")
         choices = ["A", "B", "C", "D", "E"]
         p1choice, p2choice = "", ""
+        # pangkuha ng choice, kapag walang energy edi automatic na E
+        # pero kapag meron, kukuha ng input
         if p1energy == 0:
             print(f"Player 1 ({p1name}) has no more energy. Skipping this turn...")
             p1choice = "E"
@@ -63,8 +69,10 @@ while continue_game == "Y":
                 print("Wrong Input. A, B, C, D, or E only.")
                 p2choice = input(f"Player 2 ({p2name}): ")
         print("\nMove Effects: ")
+        # call out yung moves na function para sa damage, etc.
         p1damage, p1cost, p1heal = moves(p1choice) 
         p2damage, p2cost, p2heal = moves(p2choice)
+        # kapag may nagdodge, magiging 0 yung damage tas heal ng kalaban
         if p1choice == "C":
             p2damage, p2heal = 0, 0
         if p2choice == "C":
@@ -77,14 +85,17 @@ while continue_game == "Y":
         if p2heal > 0:
             print(f"Player 2 ({p2name}) heals for {p2heal} health.")
         print(f"Player 1 ({p1name}) received {p2damage} damage\n")
+        # computation ng result
         p1health += p1heal - p2damage
         p2health += p2heal - p1damage
+        # kapag nagnegative, magiging 0
         p1energy -= p1cost
         if p1energy < 0:
             p1energy = 0
         p2energy -= p2cost
         if p2energy < 0:
             p2energy = 0
+        # kada 3 nights, may rest
         if nights % 3 == 0 and p1health > 0 and p2health > 0:
             print("3 nights have passed. Both vampire spawn shall rest")
             if p1energy == 0:
@@ -108,6 +119,7 @@ while continue_game == "Y":
                 p2health += 25
                 p2energy += 20
         nights += 1
+    # para malaman sino panalo
     print("=" * 10 + "\nPlayer Status\n" + "-" * 10)
     stats(1, p1name, p1health, p1energy)
     print("-" * 10)
