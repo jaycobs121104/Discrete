@@ -113,6 +113,28 @@ def do_nothing():
     print(" " * 10 + "  (___||___)")
     time.sleep(2)
 
+def restwell():
+    print(" " * 10 + "              |¯¯¯¯¯¯/  ")
+    time.sleep(0.2)
+    print(" " * 10 + "               ¯¯/  /")
+    time.sleep(0.2)
+    print(" " * 10 + "                /  /__")
+    time.sleep(0.2)
+    print(" " * 10 + "               /______|")
+    time.sleep(0.2)
+    print(" " * 10 + "       |¯¯¯¯/")
+    time.sleep(0.2)
+    print(" " * 10 + "        ¯/ /_")
+    time.sleep(0.2)
+    print(" " * 10 + "        /____|")
+    time.sleep(0.2)
+    print(" " * 10 + "|¯¯¯¯/")
+    time.sleep(0.2)
+    print(" " * 10 + " ¯/ /_")
+    time.sleep(0.2)
+    print(" " * 10 + " /____|")
+    time.sleep(2)
+
 # function para makita player status
 def stats(p1name, p1health, p1energy, p2name, p2health, p2energy):
     print("=" * 10 + "\nPlayer Status\n" + "-" * 10)
@@ -212,6 +234,8 @@ def move_effects(p1health, p1energy, p2health, p2energy, p1choice, p2choice):
 
 # function na kada 3 nights, magrerest
 def rest(p1name, p1health, p1energy, p2name, p2health, p2energy):
+    restwell()
+    os.system('cls')
     print("3 nights have passed. Both vampire spawn shall rest")
     if p1energy == 0:
         print(f"Player 1 ({p1name}) is too tired, and can only rest partially...")
