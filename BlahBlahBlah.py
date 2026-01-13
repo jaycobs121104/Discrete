@@ -92,11 +92,11 @@ def drain_life():
     time.sleep(2)
 
 def do_nothing():
-    print(" " * 10 + "    /¯¯¯¯\\ ")
+    print(" " * 10 + "    /¯¯¯¯\\")
     time.sleep(0.2)
-    print(" " * 10 + "    \\    /")
+    print(" " * 10 + "  |\\\\    //|")
     time.sleep(0.2)
-    print(" " * 10 + " ___/`--`\\___")
+    print(" " * 10 + " _|_/`--`\\_|_")
     time.sleep(0.2)
     print(" " * 10 + "|            |")
     time.sleep(0.2)
