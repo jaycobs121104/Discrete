@@ -127,25 +127,45 @@ class BinarySearchTree:
         #Finding the in-order successor (smallest in the right subtree)
         successor_parent = node
         successor = node.right
+        predecessor_parent = node
+        predecessor = node.left
         original_node = node.value
-        #Finding the successor
+        #Finding successor and predecessor
         while successor.left:
             successor_parent = successor
             successor = successor.left
-        #Replacing the value of the node to be deleted with the successor's value
-        node.value = successor.value
-        if successor_parent.left == successor:
-            successor_parent.left = successor.right
-        elif successor_parent.right == successor:
-            successor_parent.right = successor.right
+        while predecessor.right:
+            predecessor_parent = predecessor
+            predecessor = predecessor.right
+        #Deciding whether to use predecessor or successor
+        if (original_node - predecessor.value) < (successor.value - original_node):
+            node.value = predecessor.value
+            if predecessor_parent.left == predecessor:
+                predecessor_parent.left = predecessor.left
+            elif predecessor_parent.right == predecessor:
+                predecessor_parent.right = predecessor.right
+            else:
+                #If we reach here, something went wrong
+                try:
+                    raise NotImplementedError("RemoveTwoChildren is not implemented")
+                except NotImplementedError as e:
+                    print(e)
+                    return self
+            print(f"Removed node with two children with value: {original_node}, replaced with predecessor value: {predecessor.value}")
         else:
-            #If we reach here, something went wrong
-            try:
-                raise NotImplementedError("RemoveTwoChildren is not implemented")
-            except NotImplementedError as e:
-                print(e)
-                return self
-        print(f"Removed node with two children with value: {original_node}, replaced with successor value: {successor.value}")
+            node.value = successor.value
+            if successor_parent.left == successor:
+                successor_parent.left = successor.right
+            elif successor_parent.right == successor:
+                successor_parent.right = successor.right
+            else:
+                #If we reach here, something went wrong
+                try:
+                    raise NotImplementedError("RemoveTwoChildren is not implemented")
+                except NotImplementedError as e:
+                    print(e)
+                    return self
+            print(f"Removed node with two children with value: {original_node}, replaced with successor value: {successor.value}")
         return self
     
     #Displaying the tree in InOrder Traversal
