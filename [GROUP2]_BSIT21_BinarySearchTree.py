@@ -12,6 +12,7 @@ class BinarySearchTree:
     #Creating the BST
     def __init__(self):
         self.root = None
+
     #Inserting values
     def Insert(self, value):
         new_node = self.Node(value)
@@ -33,6 +34,7 @@ class BinarySearchTree:
                     break
                 current_node = current_node.right
         return self
+    
     #Checking if a value exists in the tree
     def Contains(self, value):
         current_node = self.root
@@ -46,6 +48,7 @@ class BinarySearchTree:
                 return True
         #Value not found
         return False
+    
     #Removing a value from the tree
     def Remove(self, value):
         #Initializing the node to remove and its parent
@@ -76,7 +79,8 @@ class BinarySearchTree:
         elif not has_left and has_right:
             return self.remove_node_with_one_child(current_node, parent_node)
         else:
-            return self.remove_node_with_two_child(current_node, parent_node)
+            return self.remove_node_with_two_children(current_node)
+        
     #Removing Node With No Children
     def remove_leaf_node(self, node, parent):
         if parent is None:
@@ -94,6 +98,7 @@ class BinarySearchTree:
                 return self
         print(f"Removed leaf node with value: {node.value}")
         return self
+    
     #Removing Node With One Child
     def remove_node_with_one_child(self, node, parent):
         #Determine the child node
@@ -116,31 +121,49 @@ class BinarySearchTree:
         return self
         
     #Removing Node With Two Children
-    def remove_node_with_two_child(self, node, parent):
+    def remove_node_with_two_children(self, node):
         #Finding the in-order successor (smallest in the right subtree)
         successor_parent = node
         successor = node.right
+        predecessor_parent = node
+        predecessor = node.left
         original_node = node.value
-
+        #Finding successor and predecessor
         while successor.left:
             successor_parent = successor
             successor = successor.left
-
-        #Replace node's value with successor's value
-        node.value = successor.value
-        #Remove the successor node
-        if successor_parent.left == successor:
-            successor_parent.left = successor.right
-        elif successor_parent.right == successor:
-            successor_parent.right = successor.right
+        while predecessor.right:
+            predecessor_parent = predecessor
+            predecessor = predecessor.right
+        #Deciding whether to use predecessor or successor
+        if (original_node - predecessor.value) < (successor.value - original_node):
+            node.value = predecessor.value
+            if predecessor_parent.left == predecessor:
+                predecessor_parent.left = predecessor.left
+            elif predecessor_parent.right == predecessor:
+                predecessor_parent.right = predecessor.right
+            else:
+                #If we reach here, something went wrong
+                try:
+                    raise NotImplementedError("RemoveTwoChildren is not implemented")
+                except NotImplementedError as e:
+                    print(e)
+                    return self
+            print(f"Removed node with two children with value: {original_node}, replaced with predecessor value: {predecessor.value}")
         else:
-            #If we reach here, something went wrong
-            try:
-                raise NotImplementedError("RemoveTwoChildren is not implemented")
-            except NotImplementedError as e:
-                print(e)
-                return self
-        print(f"Removed node with two children with value: {original_node}")
+            node.value = successor.value
+            if successor_parent.left == successor:
+                successor_parent.left = successor.right
+            elif successor_parent.right == successor:
+                successor_parent.right = successor.right
+            else:
+                #If we reach here, something went wrong
+                try:
+                    raise NotImplementedError("RemoveTwoChildren is not implemented")
+                except NotImplementedError as e:
+                    print(e)
+                    return self
+            print(f"Removed node with two children with value: {original_node}, replaced with successor value: {successor.value}")
         return self
     
     #Displaying the tree in InOrder Traversal
