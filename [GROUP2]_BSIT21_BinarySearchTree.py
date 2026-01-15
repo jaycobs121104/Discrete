@@ -118,6 +118,8 @@ class BinarySearchTree:
                 print(e)
                 return self
         print(f"Removed node with one child with value: {node.value}")
+        if parent:
+            print(f"And relinked its child ({child.value}) to parent ({parent.value})")
         return self
         
     #Removing Node With Two Children
