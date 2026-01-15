@@ -120,6 +120,7 @@ class BinarySearchTree:
         #Finding the in-order successor (smallest in the right subtree)
         successor_parent = node
         successor = node.right
+        original_node = node.value
 
         while successor.left:
             successor_parent = successor
@@ -130,15 +131,16 @@ class BinarySearchTree:
         #Remove the successor node
         if successor_parent.left == successor:
             successor_parent.left = successor.right
-        else:
+        elif successor_parent.right == successor:
             successor_parent.right = successor.right
-        #If we reach here, something went wrong
-        try:
-            raise NotImplementedError("RemoveTwoChildren is not implemented")
-        except NotImplementedError as e:
-            print(e)
-            return self
-        print(f"Removed node with two children with value: {node.value}")
+        else:
+            #If we reach here, something went wrong
+            try:
+                raise NotImplementedError("RemoveTwoChildren is not implemented")
+            except NotImplementedError as e:
+                print(e)
+                return self
+        print(f"Removed node with two children with value: {original_node}")
         return self
     
     #Displaying the tree in InOrder Traversal
