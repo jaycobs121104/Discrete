@@ -1,20 +1,25 @@
+#for clearing terminal
 import os
+#Binary Search Tree function
 class BinarySearchTree:
+    #Creating Nodes
     class Node:
         def __init__(self, value):
             self.value = value
             self.left = None
             self.right = None
     
+    #Creating the BST
     def __init__(self):
         self.root = None
-
+    #Inserting values
     def Insert(self, value):
         new_node = self.Node(value)
+        #If tree is empty
         if not self.root:
             self.root = new_node
             return self
-        
+        #Traversing the tree and inserting the value
         current_node = self.root
         while value != current_node.value:
             if value < current_node.value:
@@ -28,7 +33,7 @@ class BinarySearchTree:
                     break
                 current_node = current_node.right
         return self
-    
+    #Checking if a value exists in the tree
     def Contains(self, value):
         current_node = self.root
         while current_node:
@@ -37,28 +42,33 @@ class BinarySearchTree:
             elif value > current_node.value:
                 current_node = current_node.right
             else:
+                #This means we found the value
                 return True
+        #Value not found
         return False
-    
+    #Removing a value from the tree
     def Remove(self, value):
+        #Initializing the node to remove and its parent
         current_node = self.root
         parent_node = None
-
+        #Finding the node to remove
         while current_node and current_node.value != value:
             parent_node = current_node
             if value < current_node.value:
                 current_node = current_node.left
             else:
                 current_node = current_node.right
+        #Handling the case where the value is not found
         try:
             if not current_node:
                 raise Exception("Value not found in the tree")
         except Exception as e:
             print(e)
             return self
+        #Determining the number of children
         has_left = current_node.left is not None
         has_right = current_node.right is not None
-
+        #Removing based on the number of children
         if not has_left and not has_right:
             return self.remove_leaf_node(current_node, parent_node)
         elif has_left and not has_right:
@@ -67,7 +77,7 @@ class BinarySearchTree:
             return self.remove_node_with_one_child(current_node, parent_node)
         else:
             return self.remove_node_with_two_child(current_node, parent_node)
-        
+    #Removing Node With No Children
     def remove_leaf_node(self, node, parent):
         if parent is None:
             self.root = None
@@ -76,6 +86,7 @@ class BinarySearchTree:
         elif parent.right == node:
             parent.right = None
         else:
+            #If we reach here, something went wrong
             try:
                 raise NotImplementedError("RemoveNoChildren is not implemented")
             except NotImplementedError as e:
@@ -83,9 +94,11 @@ class BinarySearchTree:
                 return self
         print(f"Removed leaf node with value: {node.value}")
         return self
-    
+    #Removing Node With One Child
     def remove_node_with_one_child(self, node, parent):
+        #Determine the child node
         child = node.left if node.left else node.right
+        #Re-link the parent to the child
         if parent is None:
             self.root = child
         elif parent.left == node:
@@ -93,6 +106,7 @@ class BinarySearchTree:
         elif parent.right == node:
             parent.right = child
         else:
+            #If we reach here, something went wrong
             try:
                 raise NotImplementedError("RemoveOneChild is not implemented")
             except NotImplementedError as e:
@@ -101,8 +115,9 @@ class BinarySearchTree:
         print(f"Removed node with one child with value: {node.value}")
         return self
         
-    
+    #Removing Node With Two Children
     def remove_node_with_two_child(self, node, parent):
+        #Finding the in-order successor (smallest in the right subtree)
         successor_parent = node
         successor = node.right
 
@@ -110,14 +125,14 @@ class BinarySearchTree:
             successor_parent = successor
             successor = successor.left
 
+        #Replace node's value with successor's value
         node.value = successor.value
-
+        #Remove the successor node
         if successor_parent.left == successor:
             successor_parent.left = successor.right
-            return self
         else:
             successor_parent.right = successor.right
-            return self
+        #If we reach here, something went wrong
         try:
             raise NotImplementedError("RemoveTwoChildren is not implemented")
         except NotImplementedError as e:
@@ -126,6 +141,7 @@ class BinarySearchTree:
         print(f"Removed node with two children with value: {node.value}")
         return self
     
+    #Displaying the tree in InOrder Traversal
     def InOrder(self):
         result = []
         def _inorder(n):
@@ -137,22 +153,29 @@ class BinarySearchTree:
         _inorder(self.root)
         print("InOrder:", result)
 
+#Helper function to parse input
 def tryparse(value):
     try:
         return int(value)
     except ValueError:
         return None
 
+#Main program loop
 if __name__ == "__main__":
+    #Creating the BST instance
     bst = BinarySearchTree()
     cont = "Y"
+    #Looping until user decides to stop
     while cont == "Y":
+        #Input validation loop
         while True:
             choice = input("What do you want to do:\n1. Insert\n2. Contains\n3. Remove\n4. Display\nEnter choice (1-4): ")
             choice = tryparse(choice)
             if choice is None or choice < 1 or choice > 4:
                 print("Invalid choice. Please enter a number between 1 and 4.")
+            #Valid choice
             else:
+                #Insert value
                 if choice == 1:
                     while True:
                         val = input("Enter value to insert: ")
@@ -164,6 +187,7 @@ if __name__ == "__main__":
                             print(f"{val} inserted.")
                             break
                     break
+                #Contains value
                 elif choice == 2:
                     while True:
                         val = input("Enter value to check: ")
@@ -177,6 +201,7 @@ if __name__ == "__main__":
                                 print(f"{val} is not in the tree.")
                             break
                     break
+                #Remove value
                 elif choice == 3:
                     while True:
                         val = input("Enter value to remove: ")
@@ -187,11 +212,15 @@ if __name__ == "__main__":
                             bst.Remove(val)
                             break
                     break
+                #Display tree
                 elif choice == 4:
                     bst.InOrder()
                     break
+                #Invalid choice (should not reach here)
                 else:
                     print("Invalid choice. Please enter a number between 1 and 4.")
+        #Asking if user wants to continue, either Y or y, if any other input, exit
         cont = input("Type (Y) to continue: ").upper()
+        #Clear the terminal for better readability
         os.system('cls')
     
